@@ -1,61 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--@PREPROC:  ./proc/pre.sh-->
 <!--@POSTPROC: ./proc/post.sh-->
-<module suppressWarnings="true">
+<module>
 
 <rels>
-  <!--Context group-to-Context relationship(s)-->
-  <RelationshipElement name="Context Group - Context" type="hierarchical">
+  <!--Stratum/Feature-to-Locus relationship(s)-->
+  <RelationshipElement name="Stratum Feature - Locus" type="hierarchical">
     <description>A 1-to-n relationship between the parent and its children, respectively.</description>
-    <parent>includes</parent>
-    <child>is included in</child>
+    <parent>{includes}</parent>
+    <child>{is_included_in}</child>
   </RelationshipElement>
 
-  <!--Context-to-Context relationship(s)-->
+  <!--Stratum/Feature-to-Stratum/Feature relationship(s)-->
   <!--IMPORTANT: These must not contain dashes!-->
-  <RelationshipElement name="Butts" type="hierarchical">
-    <description>Implements a Butts-ButtedBy for loci.</description>
-    <parent>Butts</parent>
-    <child>Butted By</child>
-  </RelationshipElement>
-  <RelationshipElement name="Rebuilt" type="hierarchical">
-    <description>Implements a Rebuilt - Rebuilt By</description>
-    <parent>Rebuilt</parent>
-    <child>Rebuilt By</child>
-  </RelationshipElement>
-  <RelationshipElement name="Bonded To" type="bidirectional">
-    <description>Implements a bonded to for loci</description>
-  </RelationshipElement>
-  <RelationshipElement name="Cuts" type="hierarchical">
-    <description>Implements a cuts-cutby for loci.</description>
-    <parent>Cuts</parent>
-    <child>Cut by</child>
-  </RelationshipElement>
-  <RelationshipElement name="Fill Of" type="hierarchical">
-    <description>Implements a fillof-filledwith for loci.</description>
-    <parent>Fill Of</parent>
-    <child>Filled With </child>
-  </RelationshipElement>
-  <RelationshipElement name="Arbitrarily separated from" type="bidirectional">
+  <RelationshipElement name="{arbitrarily_separated_from}" type="bidirectional">
     <description>When two or more locus codes have been assigned to what is ultimately determined to be the same locus</description>
   </RelationshipElement>
-  <RelationshipElement name="Precisely contemporary with" type="bidirectional">
-    <description>Loci unequivocally contemporary</description>
+  <RelationshipElement name="{bonded_to}" type="bidirectional">
+    <description>Implements a bonded to for loci</description>
   </RelationshipElement>
-  <RelationshipElement name="Broadly contemporary with" type="bidirectional">
+  <RelationshipElement name="{broadly_contemporary_with}" type="bidirectional">
     <description>Loci suspected to be contemporary but no direct physical relationship or evidence (i.e. adjacent buildings)</description>
   </RelationshipElement>
-  <RelationshipElement name="EarlierLater" type="hierarchical">
+  <RelationshipElement name="{butts}" type="hierarchical">
+    <description>Implements a Butts-Butted by for loci.</description>
+    <parent>{butts}</parent>
+    <child>{butted_by}</child>
+  </RelationshipElement>
+  <RelationshipElement name="{covers}" type="hierarchical">
+    <description>Implements a Butts-Butted by for loci.</description>
+    <parent>{covers}</parent>
+    <child>{covered_by}</child>
+  </RelationshipElement>
+  <RelationshipElement name="{cuts}" type="hierarchical">
+    <description>Implements a cuts-cutby for loci.</description>
+    <parent>{cuts}</parent>
+    <child>{cut_by}</child>
+  </RelationshipElement>
+  <RelationshipElement name="{earlierlater}" type="hierarchical">
     <description>Implements a Stratigraphically Immediately Earlier-Later for loci.</description>
-    <parent>Immediately Earlier Than</parent>
-    <child>Immediately Later Than</child>
+    <parent>{immediately_earlier_than}</parent>
+    <child>{immediately_later_than}</child>
+  </RelationshipElement>
+  <RelationshipElement name="{fill_of}" type="hierarchical">
+    <description>Implements a fillof-filledwith for loci.</description>
+    <parent>{fill_of}</parent>
+    <child>{filled_with}</child>
+  </RelationshipElement>
+  <RelationshipElement name="{precisely_contemporary_with}" type="bidirectional">
+    <description>Loci unequivocally contemporary</description>
+  </RelationshipElement>
+  <RelationshipElement name="ParentChild" type="hierarchical">
+    <description></description>
+    <parent>{parent_of}</parent>
+    <child>{child_of}</child>
   </RelationshipElement>
 </rels>
 
 <User f="nodata nolabel">
   <User_List>
     <Users t="dropdown" f="user"/>
-    <Device_Code t="dropdown"/>
+    <Device_Code t="dropdown" f="persist" vp="Locus/Vars/Device_Code"/>
     <Login t="button" l="Control"/>
     <Module_Guide t="button" l="User/Help"/>
   </User_List>
@@ -65,19 +69,16 @@
 </User>
 
 <Control f="nodata">
-  <Contexts>
-    Main
-    <Create_New_Locus   t="button" l="Context"/>
-    <Create_New_Stratum t="button" l="Context_Group">
-      Create New Stratum/Feature
-    </Create_New_Stratum>
-    <New_FCN            t="button" l="FCN"/>
-    <Create_New_Diary   t="button" l="Diary"/>
-    <Team_Members/>
-    <Trench_Dimensions t="dropdown"/>
-    <autonum/>
+  <Site f="noscroll">
+    <New_Site_Name    f="notnull"/>
+    <Year_of_Campaign f="notnull" b="decimal"/>
     <GPS_Diagnostics t="gpsdiag"/>
-  </Contexts>
+    <Create_New_Site         t="button" l="Site"/>
+    <Choose_an_Existing_Site t="list"   e="Site"/>
+  </Site>
+  <Next_IDs>
+    <autonum/>
+  </Next_IDs>
   <search>
     <!--The semantics of this element has been changed with @POSTPROC. A
          Select_User dropdown has been placed beside the Entity_List.
@@ -88,47 +89,199 @@
   </search>
 </Control>
 
-<Context>
-  Locus
+<Site>
+  <Site f="noscroll">
+    <Site_Site_Name f="id readonly" i="Control/Site/New_Site_Name">
+      Site Name
+    </Site_Site_Name>
+    <Site_Year_of_Campaign f="id readonly" b="decimal" i="Control/Site/Year_of_Campaign">
+      Year of Campaign
+      <str><fmt> $0</fmt></str>
+    </Site_Year_of_Campaign>
+    <Guide t="webview">
+      'Trench ID' must be in the format 'T + number', e.g. T1, T2, T3.
+    </Guide>
+    <Trench_ID f="nodata notnull"/>
+    <Create_New_Trench         lc="Trench"/>
+    <List_of_Existing_Trenches ec="Trench"/>
+  </Site>
+  <Vars f="hidden">
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Vars>
+</Site>
+
+<Trench>
+  <Trench>
+    <Trench_Site_Name f="id readonly" i="Site/Site/Site_Site_Name">
+      Site Name
+      <str>
+        <pos>1</pos>
+      </str>
+    </Trench_Site_Name>
+    <author/>
+    <Trench_Trench_ID f="id readonly" i="Site/Site/Trench_ID">
+      Trench ID
+      <str>
+        <pos>3</pos>
+        <fmt>-$0</fmt>
+      </str>
+    </Trench_Trench_ID>
+    <Team_Members/>
+    <Trench_Dimensions>
+      <!--@SOURCE: vocabs/trench-dimensions.xml-->
+    </Trench_Dimensions>
+    <Grid_SW_Corner_Coordinates t="webview"/>
+    <gps/>
+    <Excavation_Method t="checkbox" f="notnull">
+      <desc>Enter details here about the method of archaeological excavation.</desc>
+      <opts>
+        <opt>Hand-pick
+          <desc>Excavated by hand-pick.</desc>
+        </opt>
+        <opt>Trowel
+          <desc>Excavated by trowel.</desc>
+        </opt>
+        <opt>Pick
+          <desc>Excavated by pick.</desc>
+        </opt>
+        <opt>Shovel</opt>
+        <opt>Other
+          <desc>Excavated by another method. Add details in Annotation field.</desc>
+        </opt>
+      </opts>
+    </Excavation_Method>
+    <timestamp>
+      Date Opened
+    </timestamp>
+    <Set_Date_Closed t="button" l="Date_Closed">
+      Set Date Closed...
+    </Set_Date_Closed>
+    <Date_Closed f="readonly"/>
+    <Brief_Description/>
+    <Your_Discussion/>
+    <Add_Trench_Files      t="button"   lc="Trench_Files"/>
+    <Attached_Trench_Files t="dropdown" ec="Trench_Files"/>
+  </Trench>
+  <Loci f="noscroll">
+    <Create_New_Locus      t="button" lc="Locus"/>
+    <List_of_Existing_Loci t="list"   ec="Locus"/>
+  </Loci>
+  <Strata_Features f="noscroll">
+    Strata/Features
+    <Create_New_Stratum_Feature t="button" lc="Stratum_Feature">
+      Create New Stratum/Feature
+    </Create_New_Stratum_Feature>
+    <List_of_Existing_Strata_Features t="list" ec="Stratum_Feature">
+      List of Existing Strata/Features
+    </List_of_Existing_Strata_Features>
+  </Strata_Features>
+  <FCNs f="noscroll">
+    <Create_New_FCN        t="button" lc="FCN"/>
+    <List_of_Existing_FCNs t="list"/>
+  </FCNs>
+  <Diaries f="noscroll">
+    <Create_New_Diary         t="button" lc="Diary"/>
+    <List_of_Existing_Diaries t="list"   ec="Diary"/>
+  </Diaries>
+  <Legacies f="noscroll">
+    <Create_New_Legacy         t="button" lc="Legacy"/>
+    <List_of_Existing_Legacies t="list"   ec="Legacy"/>
+  </Legacies>
+  <Vars f="hidden">
+    <Trench_Year_of_Campaign f="id" i="Site/Site/Site_Year_of_Campaign">
+      <str>
+        <pos>2</pos>
+        <fmt> $0</fmt>
+      </str>
+    </Trench_Year_of_Campaign>
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Vars>
+</Trench>
+
+<Date_Closed f="nodata">
+  <Date_Closed>
+    <Date_Closed b="date"/>
+    <Set_Date_Closed t="button"/>
+    <Cancel t="button"/>
+  </Date_Closed>
+</Date_Closed>
+
+<Trench_Files>
+  <Add_Trench_Files>
+    <cols>
+      <Trench_Files_Site_Name        f="id readonly" i="Trench/Trench/Trench_Site_Name">
+        Site Name
+      </Trench_Files_Site_Name>
+      <Trench_Files_Year_of_Campaign f="id readonly" i="Trench/Vars/Trench_Year_of_Campaign">
+        Year of Campaign
+        <str><fmt> $0</fmt></str>
+      </Trench_Files_Year_of_Campaign>
+    </cols>
+    <Trench_Files_Trench_ID f="id readonly" i="Trench/Trench/Trench_Trench_ID">
+      Trench ID
+      <str><fmt>-$0</fmt></str>
+    </Trench_Files_Trench_ID>
+    <author f="readonly"/>
+    <File_Type f="id">
+      <str><fmt>-$0</fmt></str>
+      <opts>
+        <opt>Plan</opt>
+        <opt>Section</opt>
+        <opt>Photo</opt>
+        <opt>Other</opt>
+      </opts>
+    </File_Type>
+    <File_Name/>
+    <File_Comment/>
+    <Add_Photo t="camera"/>
+    <Attach_File t="file"/>
+    <View_Attached_Files t="viewfiles"/>
+  </Add_Trench_Files>
+  <Vars f="hidden">
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Vars>
+</Trench_Files>
+
+<Locus>
   <desc>The physical result of any single action whether it leaves a positive or negative record within the stratigraphic sequence. (MoLAS 1994)</desc>
   <General>
     <cols>
-      <Context_AreaCode f="id notnull autonum">
+      <Locus_Site_Name f="id notnull" i="Trench/Trench/Trench_Site_Name">
+        Site Name
+        <str>
+          <pos>1</pos>
+        </str>
+      </Locus_Site_Name>
+      <Locus_Trench_ID f="id readonly" i="Trench/Trench/Trench_Trench_ID">
         Trench ID
         <!--The semantics of the autonum flag have been changed using
              @POSTPROC-->
         <str>
-          <pos>3</pos>
-          <fmt>-Trench-$2</fmt>
+          <pos>4</pos>
+          <fmt>-$0</fmt>
         </str>
-      </Context_AreaCode>
-      <Context_Context_ID f="id notnull autonum readonly">
+      </Locus_Trench_ID>
+      <Locus_Locus_ID f="id notnull" b="decimal">
         Locus ID
         <desc>Every archaeological locus (negative element (cut), deposit, structure, skeleton, artefact cluster) is given a unique 3 or 4 letter locus code. Each trench is designated with a separate letter which starts the code, so it is immediately obvious to which trench a locus belongs. For example locus HAA belongs to Trench H, locus MQP to Trench M etc.
         The loci are labelled consecutively in alphabetical order using the letters following the trench letter. For Trench H the first locus would be HAA, the second HAB, the third HAB and so on. In addition sets of letters can denote parts of trenches, buildings etc. E.g. HFs might denote loci from a specific building.
         Burial locus codes begin with the letter Z, followed by the trench letter. Hence burial ZHA is the first burial locus from trench H.
         Check with the trench supervisor who will assign the locus code from the central register.</desc>
         <str>
-          <pos>1</pos>
-          <fmt>L-$2</fmt>
+          <pos>5</pos>
+          <fmt>-L$0</fmt>
         </str>
-      </Context_Context_ID>
+      </Locus_Locus_ID>
     </cols>
-    <Trench_Dimensions>
-      <opts>
-        <opt>0.5 x 0.5 m</opt>
-        <opt>1 x 1 m</opt>
-        <opt>2 x 1 m</opt>
-        <opt>5 x 5 m</opt>
-        <opt>10 x 10 m</opt>
-        <opt>No Observation</opt>
-        <opt>Other</opt>
-      </opts>
-    </Trench_Dimensions>
-    <Context_Name>
-      Brief Description
-      <desc>Enter a brief, clear name for the Context eg 'House A - west wall'</desc>
-    </Context_Name>
+    <Brief_Description>
+      <desc>Enter a brief, clear name for the Locus eg 'House A - west wall'</desc>
+    </Brief_Description>
     <cols>
       <Grid_X b="decimal">
         <desc>The X coordinate on the SW corner of the locus.</desc>
@@ -139,14 +292,10 @@
     </cols>
     <cols>
       <col>
-        <Date_Opened f="id">
+        <Date_Opened>
           <desc>Date on which the Locus was first excavated. This will automatically be set to the date on which the locus is recorded but can be edited using the keyboard.</desc>
-          <str>
-            <pos>4</pos>
-            <fmt>-$2</fmt>
-          </str>
         </Date_Opened>
-        <Team_Members>
+        <Team_Members i="Trench/Trench/Team_Members">
           <desc>Initials of the excavators that have worked on the locus.</desc>
         </Team_Members>
       </col>
@@ -172,8 +321,7 @@
       </Excavation_Method>
     </cols>
     <cols>
-      <Horizon_Boundary>
-        Basal Edge Definition
+      <Basal_Edge_Definition>
         <desc>Describe the boundary between this and the next locus.</desc>
         <opts>
           <opt>No Observation<desc>data not collected</desc></opt>
@@ -183,31 +331,25 @@
           <opt>Clear<desc>The boundary with the earlier locus/loci was very clearly defined during excavation.</desc> </opt>
           <opt>ArbitrarySpit<desc>There is no meaningful boundary with an earlier locus. The boundary has been artificially created by the excavation process.</desc> </opt>
         </opts>
-      </Horizon_Boundary>
+      </Basal_Edge_Definition>
       <Contamination>
         <desc>The extent to which the locus has been contaminated.</desc>
         <opts>
           <opt>No Observation</opt>
-          <opt>Contaminated
-          <desc>Contaminated by later material eg by unidentified cut at time of initial excavation by large scale animal or root activity which were not isolated by excavation by excavation processes some annoying person mixed the material or stuff fell into deposit from the section.</desc></opt>
-          <opt>Possibly Contaminated
-          <desc>At Boncuklu as at many sites there is significant animal activity represented by burrows. We aim to remove most animal burrow fill. This is easier in loci with clear and compact sediment characteristics like plaster floors walls building fills more difficult in loose middens. In one sense at Boncuklu as at many sites every locus is possibly contaminated but there would be little point in indicating that since it is something we generally understand. Therefore this option is to be
-          used to indicate those situations where one may have tried to remove animal introduced or other contamination but are unsure this has been successful and there is a likely but not definitive chance of some later contamination beyond. This option also applies where there may have been later cuts not recognised but we are not sure.</desc></opt>
-          <opt>High likelihood high amount derived
-          <desc>It is very likely that significant amounts of earlier artifact and ecofact material has become incorporated in the deposit. For example; is this locus a mud brick wall or other structure or building or structural debris or a deposit which has seen the redeposition of material excavated from cuts. These are all situations in which earlier material is likely to have been dug up and re-used (in the mud brick) or re-deposited (when digging out pits).</desc></opt>
-          <opt>Low likelihood low amount derived
-          <desc>You think there is little chance that very much earlier material has made it's way into this deposit.</desc></opt>
-          <opt>Primary deposit
-          <desc>You are very sure that the deposit and all finds therein directly relate to activity within a specific period of time and there is thus minimal amounts of derived material and no contamination.</desc></opt>
+          <opt>Contaminated (with Recent Material)</opt>
+          <opt>Possibly Contaminated (with Recent Material)</opt>
+          <opt>Anthropogenic Secondary Deposit (Ancient)</opt>
+          <opt>Anthropogenic Primary Deposit</opt>
+          <opt>Natural Primary Deposit</opt>
+          <opt>Natural Secondary Deposit</opt>
         </opts>
       </Contamination>
     </cols>
-    <Context_Type f="id">
-      Locus Type
+    <Locus_Type f="id">
       <desc>Describe the locus type by selecting an icon as defined below.
   When you have selected a locus type you can proceed to open the "Fill in locus type details" page. Note this page will not open unless you have selected a locus type.</desc>
       <str>
-        <pos>2</pos>
+        <pos>3</pos>
         <fmt>-$1</fmt>
       </str>
       <opts>
@@ -219,23 +361,13 @@
         <desc>Any Locus with deposited sediment and soil, such as floor layers, pit and grave fills, hearth fills and natural sediments.</desc></opt>
         <opt p="gallery/ContextType/Orange/Natural.png">Natural
         <desc>Any Locus with deposited sediment and soil, such as floor layers, pit and grave fills, hearth fills and natural sediments.</desc></opt>
-        <opt p="gallery/ContextType/Orange/Structure.png">Feature Part
+        <opt p="gallery/ContextType/Orange/Structure.png">Construction
         <desc>Any Locus consisting of deliberately constructed structural element, independent of a Negative Element (i.e. cut, such as a wall or a hearth).</desc></opt>
         <opt p="gallery/ContextType/Orange/Skeleton.png">Skeleton
         <desc>Human skeletal remains.</desc></opt>
       </opts>
-    </Context_Type>
-    <Fill_in_Context_Type_Details t="button">
-      Fill in Locus Type Details
-    </Fill_in_Context_Type_Details>
-    <cols>
-      <Plans f="notnull">
-        <desc>Reference numbers to plans or drawings of this Locus.</desc>
-      </Plans>
-      <Section_Numbers f="notnull">
-        <desc>Reference numbers to section drawings of this Locus</desc>
-      </Section_Numbers>
-    </cols>
+    </Locus_Type>
+    <Fill_in_Locus_Type_Details t="button"/>
     <cols>
       <Photo_of_Plan    t="camera"/>
       <Photo_of_Section t="camera"/>
@@ -251,16 +383,16 @@
       <timestamp f="readonly">Record Created Date:</timestamp>
     </cols>
   </General>
-  <Measure f="noscroll">
+  <Measure>
     <cols>
-      <Highest_Level f="notnull" b="decimal">
+      <Absolute_Height_Top_m f="notnull" b="decimal">
         Absolute Height Top (m)
         <desc>The highest elevation or 'starting level' recorded for that locus relative to the site grid.</desc>
-      </Highest_Level>
-      <Lowest_Level f="notnull" b="decimal">
+      </Absolute_Height_Top_m>
+      <Absolute_Height_Bottom_m f="notnull" b="decimal">
         Absolute Height Bottom (m)
         <desc>The lowest elevation recorded for that locus relative to the site grid.</desc>
-      </Lowest_Level>
+      </Absolute_Height_Bottom_m>
     </cols>
     <cols>
       <Measure_Length f="notnull" b="decimal">
@@ -276,12 +408,32 @@
         <desc>Depth or Height in metres.</desc>
       </Measure_Depth>
     </cols>
-    <Volume f="notnull" b="decimal">
-      Volume (litres)
-      <desc>Estimate the volume of the locus in litres. All soil will be collected in buckets of a known volume. A tally should be kept of buckets produced from a locus and the total volume calculated using that tally.</desc>
-    </Volume>
-    <Add_Height t="button" lc="Height"/>
-    <Height_List ec="Height" t="list"/>
+    <cols>
+      <col>
+        <NW_Top_Height b="decimal"/>
+        <SW_Top_Height b="decimal"/>
+        <Center_Top_Height b="decimal"/>
+      </col>
+      <col>
+        <NE_Top_Height b="decimal"/>
+        <SE_Top_Height b="decimal"/>
+      </col>
+    </cols>
+    <cols>
+      <col>
+        <NW_Bottom_Height b="decimal"/>
+        <SW_Bottom_Height b="decimal"/>
+        <Center_Bottom_Height b="decimal"/>
+      </col>
+      <col>
+        <NE_Bottom_Height b="decimal"/>
+        <SE_Bottom_Height b="decimal"/>
+      </col>
+    </cols>
+    <Volume_Liters f="notnull" b="decimal">
+      Volume (liters)
+      <desc>Estimate the volume of the locus in liters. All soil will be collected in buckets of a known volume. A tally should be kept of buckets produced from a locus and the total volume calculated using that tally.</desc>
+    </Volume_Liters>
   </Measure>
   <Cut>
     <Cut_Your_Interpretation f="notnull">
@@ -289,22 +441,24 @@
       <desc>Your interpretation of the likely function of the Locus using standardised definitions.</desc>
       <opts>
         <opt>No Observation</opt>
-        <opt>Indeterminate </opt>
-        <opt>Animal/Plant hole </opt>
-        <opt>Stakehole </opt>
-        <opt>Posthole </opt>
-        <opt>Pit </opt>
-        <opt>Hearth/Fire pit </opt>
-        <opt>Ditch/Trench </opt>
-        <opt>Construction Cut </opt>
-        <opt>Burial </opt>
-        <opt>Erosional Feature </opt>
-        <opt>Other <desc>Function not elsewhere described. Provide details in Annotation field.</desc></opt>
+        <opt>Hangtu</opt>
+        <opt>Indeterminate</opt>
+        <opt>Animal/Plant hole</opt>
+        <opt>Stakehole</opt>
+        <opt>Posthole</opt>
+        <opt>Pit</opt>
+        <opt>Hearth/Fire pit</opt>
+        <opt>Ditch/Trench</opt>
+        <opt>Construction Cut</opt>
+        <opt>Burial</opt>
+        <opt>Erosional Feature</opt>
+        <opt>Other
+          <desc>Function not elsewhere described. Provide details in Annotation field.</desc>
+        </opt>
       </opts>
     </Cut_Your_Interpretation>
     <cols>
-      <Shape_of_Cut f="notnull">
-        Shape in Plan
+      <Shape_in_Plan f="notnull">
         <desc>Describe the shape of the negative element/cut viewed from above.</desc>
         <opts>
           <opt>No Observation <desc>data not collected</desc></opt>
@@ -316,8 +470,9 @@
           <opt>Square <desc>Equal on four sides.</desc></opt>
           <opt>Sub-Circular <desc>Nearly circular.</desc></opt>
           <opt>Sub-rectangular <desc>Nearly rectangular in shape.</desc></opt>
+          <opt>Irregular</opt>
         </opts>
-      </Shape_of_Cut>
+      </Shape_in_Plan>
       <Shape_of_Cut_-_Note>
         <desc>Additional notes about the shape of the cut.</desc>
       </Shape_of_Cut_-_Note>
@@ -353,10 +508,12 @@
         <desc>Describe the shape of the cut as seen in cross section.</desc>
         <opts>
           <opt>No Observation</opt>
-          <opt>Vertical <desc>Sides are vertical</desc></opt>
-          <opt>Convex </opt>
-          <opt>Concave </opt>
-          <opt>Stepped </opt>
+          <opt>Vertical<desc>Sides are vertical</desc></opt>
+          <opt>Convex</opt>
+          <opt>Concave</opt>
+          <opt>Stepped</opt>
+          <opt>Irregular</opt>
+          <opt>Bag Shaped</opt>
         </opts>
       </Sides_of_Cut>
       <Shape_of_Base f="notnull">
@@ -385,6 +542,7 @@
         <opt>NW-SE <desc>Oriented North-west to South-east.</desc></opt>
       </opts>
     </Orientation>
+    <Orientation_Degree f="notnull" b="decimal"/>
     <Inclination_of_axis f="notnull">
       <desc>Inclination of the axis of post- and stakeholes.</desc>
       <opts>
@@ -397,130 +555,47 @@
     </Inclination_of_axis>
     <Truncation/>
   </Cut>
-  <Structure>
-    Feature Part
-    <CG_Context_Type f="notnull">
-      Feature Type
-      <desc>Enter the type of feature you are describing.</desc>
-      <opts>
-        <opt>No Observation
-          <desc>data not collected</desc>
-        </opt>
-        <opt>Negative Element
-          <desc>Any Locus which forms a negative interface (cut) with another locus, such as a cut for a pit, burial, ditch, wall foundation or robber trench.</desc>
-        </opt>
-        <opt>Deposit
-          <desc>Any Locus with deposited sediment and soil, such as floor layers, pit and grave fills, hearth fills and natural sediments.</desc>
-        </opt>
-        <opt>Structure
-          <desc>Any Locus consisting of deliberately constructed structures, independent of a Negative Element (i.e. cut, such as walls and hearths).</desc>
-        </opt>
-        <opt>Wall
-          <desc>A structured vertical barrier made from durable materials defining a space.</desc>
-        </opt>
-        <opt>Floor
-          <desc>A  prepared surface, internal or external, including those made from plaster, earth etc.</desc>
-        </opt>
-        <opt>Well
-          <desc>A deep pit excavated to reach the water table.</desc>
-        </opt>
-        <opt>Pit
-          <desc>A large cut filled with sediment or other materials.</desc>
-        </opt>
-        <opt>Room
-          <desc>A discrete space within a house or other building.</desc>
-        </opt>
-        <opt>Burial
-          <desc>The cut, fill plus any associated structures relating to the deposition of human remains, including those remains, such as a skeleton.</desc>
-        </opt>
-        <opt>Building
-          <desc>A building is defined when several walls surround a discrete space</desc>
-        </opt>
-        <opt>Surface
-          <desc>A compacted horizontal layer, internal or external, on which activities took place.</desc>
-        </opt>
-        <opt>Space
-          <desc>A space is an area bounded by a structure of some kind, either external or internal, and can be for example a courtyard, room, ante-room etc.</desc>
-        </opt>
-        <opt>Posthole
-          <desc>A small pit cut to hold an upright post.</desc>
-        </opt>
-        <opt>Stakehole
-          <desc>Cuts smaller than postholes, typically c. 1-5 cm diameter.</desc>
-        </opt>
-        <opt>Hearth
-          <desc>A prepared structure in which a fire is set.</desc>
-        </opt>
-        <opt>Stakehole row
-          <desc>A row of cuts smaller than postholes, typically c. 1-5 cm diameter.</desc>
-        </opt>
-        <opt>Kiln</opt>
-        <opt>Furnace</opt>
-        <opt>House</opt>
-        <opt>Ditch</opt>
-        <opt>Midden</opt>
-        <opt>Other
-          <desc>Function not elsewhere described. Provide details in Annotation field.</desc>
-        </opt>
-      </opts>
-    </CG_Context_Type>
-    <CG_Your_description f="notnull">
-      Your Description
-      <desc>Describe the feature, any details of dimensions, disturbance, orientation etc.</desc>
-    </CG_Your_description>
-    <CG_Your_Discussion>
-      Discussion
-      <desc>Add here any elaborations on the interpretation and description.</desc>
-    </CG_Your_Discussion>
+  <Construction>
+    <Description/>
+    <Discussion/>
+    <Length       b="decimal"/>
+    <Width        b="decimal"/>
     <cols>
-      <Feature_Length b="decimal">
-        Length (m)
-        <desc>Longest dimension in metres.</desc>
-      </Feature_Length>
-      <Feature_Width b="decimal">
-        Width (m)
-        <desc>Width or diameter in metres.</desc>
-      </Feature_Width>
+      <col>
+        <NW_Top_Depth b="decimal"/>
+        <SW_Top_Depth b="decimal"/>
+        <Center_Top_Depth b="decimal"/>
+      </col>
+      <col>
+        <NE_Top_Depth b="decimal"/>
+        <SE_Top_Depth b="decimal"/>
+      </col>
     </cols>
     <cols>
-      <Feature_Top_Depth_m b="decimal">
-        Top Depth (m)
-        <desc>Depth or Height in metres.</desc>
-      </Feature_Top_Depth_m>
-      <Feature_Bottom_Depth_m b="decimal">
-        Bottom Depth (m)
-        <desc>Depth or Height in metres.</desc>
-      </Feature_Bottom_Depth_m>
+      <col>
+        <NW_Bottom_Depth b="decimal"/>
+        <SW_Bottom_Depth b="decimal"/>
+        <Center_Bottom_Depth b="decimal"/>
+      </col>
+      <col>
+        <NE_Bottom_Depth b="decimal"/>
+        <SE_Bottom_Depth b="decimal"/>
+      </col>
     </cols>
-    <cols>
-      <CG_Mid_X b="decimal">
-        Mid X
-        <desc>An appropriate mid-point on the feature should be recorded on the X/Y coordinates. This will locate the feature on the site grid system.</desc>
-      </CG_Mid_X>
-      <CG_Mid_Y b="decimal">
-        Mid Y
-        <desc>An appropriate mid-point on the feature should be recorded on the X/Y coordinates. This will locate the feature on the site grid system.</desc>
-      </CG_Mid_Y>
-    </cols>
-    <CG_Phase_Notes>
-      Notes
-      <desc>The site or building phase in which this feature was constructed or deposited.</desc>
-    </CG_Phase_Notes>
-    <CG_Plans>
-      Plans
-      <desc>Reference numbers to plans or drawings of this feature.</desc>
-    </CG_Plans>
-    <CG_Section_Numbers>
-      Section Numbers
-      <desc>Reference numbers to section drawings of this feature</desc>
-    </CG_Section_Numbers>
-  </Structure>
+    <Mid_X        b="decimal"/>
+    <Mid_Y        b="decimal"/>
+    <Sorting      b="decimal"/>
+    <Notes/>
+    <Plans/>
+    <Section_Numbers/>
+  </Construction>
   <Deposit>
     <Deposit_Your_Interpretation f="notnull">
       Your Interpretation
       <desc>Your interpretation of the likely function of the locus.</desc>
       <opts>
         <opt>No Observation</opt>
+        <opt>Hangtu</opt>
         <opt>Indeterminate
         <desc>You are unable to make an assessment of possible function.</desc></opt>
         <opt>Packing
@@ -555,8 +630,7 @@
         <desc>Function not elsewhere described. Provide details in Annotation field.</desc></opt>
       </opts>
     </Deposit_Your_Interpretation>
-    <Soil_Compaction_Type f="notnull">
-      Texture
+    <Texture f="notnull">
       <desc>Describe the compaction of the sediments in the Locus.</desc>
       <opts>
         <opt>No Observation</opt>
@@ -573,11 +647,10 @@
         <opt>Crumbly
         <desc>Deposit disintegrates into lumps under pressure.</desc></opt>
       </opts>
-    </Soil_Compaction_Type>
-    <Soil_Compaction_Description>
-      Texture Description
+    </Texture>
+    <Texture_Description>
       <desc>Description of the compaction of soil including changes throughout the deposit. Eg "Varies from loose to compact."</desc>
-    </Soil_Compaction_Description>
+    </Texture_Description>
     <Soil_Particle_Sorting>
       <desc>Assessment of the frequency with which particles of the same size occur.</desc>
       <opts>
@@ -594,8 +667,7 @@
       </opts>
     </Soil_Particle_Sorting>
     <cols>
-      <Soil_Texture f="notnull">
-        Material
+      <Material f="notnull">
         <desc>The type of sediment, eg clay, silt, sand and loam. Use the Material Helper or a Soil Sediment diagram for assisance.</desc>
         <opts>
           <opt>No Observation
@@ -629,20 +701,15 @@
           <opt>Other
           <desc>Other: describe in Annotation.</desc></opt>
         </opts>
-      </Soil_Texture>
-      <Soil_Texture_Helper t="button" l="Context/Soil_Texture_Helper">
-        Material Helper
-        <!--Here the semantics of the `l` attribute have been altered using
-            @POSTPROC-->
-      </Soil_Texture_Helper>
+      </Material>
+      <Material_Helper t="button" l="Locus/Material_Helper"/>
     </cols>
     <Soil_Colour>
       <desc>Broad colour  description of the soil, eg 'mid greyish brown'.
       </desc>
     </Soil_Colour>
-    <Soil_Munsel_Color>
-      <!--@SOURCE: vocabs/munsel.xml-->
-    </Soil_Munsel_Color>
+    <Add_Munsel_Color t="button" lc="Soil_Munsel_Color"/>
+    <Munsel_Colors t="dropdown"  ec="Soil_Munsel_Color"/>
     <cols>
       <Composition_Type f="notnull">
         Deposit Structure
@@ -689,12 +756,12 @@
         <desc>Enter a brief description of inclusions (eg stone flecks artefacts).</desc>
       </Deposit_Inclusions>
     </cols>
-    <Add_New_Matrix t="button" lc="Matrix">
+    <Add_New_Sediment_Aggregate t="button" lc="Sediment_Aggregate">
       Add New Sediment/Aggregate
-    </Add_New_Matrix>
-    <Associated_Matrices t="dropdown" ec="Matrix">
+    </Add_New_Sediment_Aggregate>
+    <Associated_Sediment_Aggregates t="dropdown" ec="Sediment_Aggregate">
       Associated Sediment/Aggregates
-    </Associated_Matrices>
+    </Associated_Sediment_Aggregates>
   </Deposit>
   <Skeleton>
     <Location/>
@@ -817,38 +884,37 @@
     </Your_Discussion>
   </Int>
   <Relationships f="noscroll">
-    <Create_Relationships_to_This_Context t="button" l="Relationship">
+    <Create_Relationships_to_This_Locus t="button" l="Relationship">
       Create Relationships to This Locus
-    </Create_Relationships_to_This_Context>
+    </Create_Relationships_to_This_Locus>
     <cols>
-      <Existing_Relationships_to_This_Context t="list" f="nodata">
+      <Existing_Relationships_to_This_Locus t="list" f="nodata">
         Existing Relationships to This Locus
-      </Existing_Relationships_to_This_Context>
+      </Existing_Relationships_to_This_Locus>
       <col>
         <Selected_Relationship t="webview"/>
-        <Load_Related_Context  t="button">
+        <Load_Related_Locus  t="button">
           Load Related Locus
-        </Load_Related_Context>
+        </Load_Related_Locus>
         <Delete_Relationship   t="button"/>
       </col>
     </cols>
   </Relationships>
-  <FCN f="noscroll">
-    <Add_FCN t="button" lc="FCN"/>
-    <List_of_Related_FCNs e="FCN" t="list"/>
-  </FCN>
+  <FCNs f="noscroll">
+    <Add_FCN              t="button" lc="FCN"/>
+    <List_of_Related_FCNs t="list"   ec="FCN"/>
+  </FCNs>
   <Add>
     <Photo t="camera">
       <desc>Use this button to take a photo of the locus using the camera on the tablet. Use a scale in the photo</desc>
     </Photo>
+    <Attach_File t="file"/>
     <View_Attached_Files t="viewfiles"/>
     <Add_Photograph_Log t="button" lc="Photograph_Log"/>
     <Select_a_Photograph_Log t="dropdown" ec="Photograph_Log"/>
   </Add>
-  <Soil_Texture_Helper f="hidden">
-    Material Helper
-    <Soil_Texture_Helper>
-      Material Helper
+  <Material_Helper f="hidden">
+    <Material_Helper>
       <desc>This helper is based on the standard flow chart for determining soil texture. Start by taking 25g of soil and placing it in your palm. Select each option and follow the prompts for TASKS (like roll ribbon) until you get a result, eg 'silty loam'. Then click the 'Update' button to have that value pasted onto your Locus record.</desc>
       <opts>
         <opt>Soil does NOT remain in ball when squeezed       
@@ -869,7 +935,7 @@
         <desc>Place approximately 25 g soil in palm. Add water dropwise and knead the soil to break down all aggregates. Soil is at the proper consistency when plastic and moldable like moist putty.</desc>
         <opt>TASK: Roll ribbon
         <desc>Rub a ball of soil between thumb and forefinger to make a 'ribbon'</desc>
-        <opt>Does NOT form a ribbom
+        <opt>Does NOT form a ribbon
         <desc>A 'ribbon' is NOT formed when a ball of soil is rubbed between thumb and forefinger.</desc>
         <opt>Loamy Sand
         <desc>In a loamy sand particles barely stick together and a moulded piece of soil just holds its shape. (VDEPI 2009: AG0058)</desc></opt></opt>
@@ -930,97 +996,83 @@
         <opt>Sandy Loam
         <desc>A sandy loam sticks together more than a loamy sand but can be easily broken. Individual sand grains can be felt and heard if a wet sample is rubbed between the index finger and thumb and held close to the ear. (VDEPI 2009: AG0058)</desc></opt></opt></opt></opt></opt></opt></opt>
       </opts>
-    </Soil_Texture_Helper>
-    <Update_Soil_Texture t="button">
-      Update Material
-    </Update_Soil_Texture>
-  </Soil_Texture_Helper>
+    </Material_Helper>
+    <Update_Material t="button"/>
+  </Material_Helper>
   <Vars f="hidden">
-    <Device_Code>
+    <Device_Code i="User/User_List/Device_Code!">
       <!--@SOURCE: vocabs/device-code.xml-->
     </Device_Code>
-    <Site_Code>
-      <desc>Short code to signify the excavation site and often the year of excavation. Assigned automatically by the module.</desc>
-    </Site_Code>
-    <SearchHelp>
-      <desc>This allows you to find any loci that contain your search term or string in any field in a locus record. Type in your term/string and press the "Search" button. Press "My Loci" to return to the full list of loci for this trench.</desc>
-    </SearchHelp>
+    <Locus_Year_of_Campaign f="id" i="Trench/Vars/Trench_Year_of_Campaign">
+      <str>
+        <pos>2</pos>
+        <fmt> $0</fmt>
+      </str>
+    </Locus_Year_of_Campaign>
   </Vars>
-</Context>
+</Locus>
 
-<Context_Group>
+<Stratum_Feature>
   Stratum/Feature
   <desc>A group of loci.</desc>
-  <Gen>
-    General
-    <Record_Type t="radio" f="id notnull">
-      <str>
-        <pos>1</pos>
-        <fmt>$1-</fmt>
-      </str>
+  <General>
+    <Record_Type t="radio" f="notnull">
       <opts>
         <opt>Stratum</opt>
         <opt>Feature</opt>
       </opts>
     </Record_Type>
+    <Feature_Type_Group t="group"/>
+    <Feature_Type t="dropdown" f="noui">
+      <!--This will be added to the UI dynamically-->
+      <opts>
+        <opt>No Observation</opt>
+        <opt>Negative Element</opt>
+        <opt>Deposit Structure</opt>
+        <opt>Wall</opt>
+        <opt>Floor</opt>
+        <opt>Well</opt>
+        <opt>Pit</opt>
+        <opt>Room</opt>
+        <opt>Burial</opt>
+        <opt>Building</opt>
+        <opt>Surface</opt>
+        <opt>Space</opt>
+        <opt>Posthole</opt>
+        <opt>Posthole Row</opt>
+        <opt>Hearth</opt>
+        <opt>Kiln</opt>
+        <opt>Furnace</opt>
+        <opt>House</opt>
+        <opt>Midden</opt>
+        <opt>Ditch</opt>
+        <opt>Other</opt>
+      </opts>
+    </Feature_Type>
+    <Feature_Prefix_Group t="group"/>
+    <Feature_Prefix t="input" f="id notnull noui">
+      <str><pos>4</pos></str>
+    </Feature_Prefix>
     <cols>
-      <Context_Group_AreaCode f="notnull">
+      <Stratum_Feature_Trench_ID f="id readonly" i="Trench/Trench/Trench_Trench_ID">
         Trench ID
-      </Context_Group_AreaCode>
-      <Context_Group_ID f="id notnull autonum">
+        <str><pos>3</pos><fmt>-$0-</fmt></str>
+      </Stratum_Feature_Trench_ID>
+      <Stratum_Feature_ID f="id notnull autonum">
         Stratum/Feature ID
         <desc>Feature number taken from the central register.</desc>
-        <str>
-          <pos>2</pos>
-          <fmt>$2-</fmt>
-        </str>
-      </Context_Group_ID>
+        <str><pos>6</pos></str>
+      </Stratum_Feature_ID>
     </cols>
-    <Feature_Type_Group t="group">
-      <Feature_Type t="dropdown" f="id noui">
-        <!--This will be added to the UI dynamically-->
-        <str>
-          <pos>3</pos>
-          <fmt>{{if $1 then "$1-"}}</fmt>
-        </str>
-        <opts>
-          <opt>No Observation</opt>
-          <opt>Negative Element</opt>
-          <opt>Deposit Structure</opt>
-          <opt>Wall</opt>
-          <opt>Floor</opt>
-          <opt>Well</opt>
-          <opt>Pit</opt>
-          <opt>Room</opt>
-          <opt>Burial</opt>
-          <opt>Building</opt>
-          <opt>Surface</opt>
-          <opt>Space</opt>
-          <opt>Posthole</opt>
-          <opt>Stakehole</opt>
-          <opt>Hearth</opt>
-          <opt>Stakehole Row</opt>
-          <opt>Kiln</opt>
-          <opt>Furnace</opt>
-          <opt>House</opt>
-          <opt>Midden</opt>
-          <opt>Ditch</opt>
-          <opt>Other</opt>
-        </opts>
-      </Feature_Type>
-    </Feature_Type_Group>
-    <CG_Your_description f="notnull">
-      Description
+    <Description f="notnull">
       <desc>Describe the feature, any details of dimensions, disturbance, orientation etc.</desc>
-    </CG_Your_description>
-    <CG_Your_Interpretation f="notnull">
-      Interpretation
+    </Description>
+    <Interpretation f="notnull">
       <desc>Describe your understanding of the feature function, phasing etc.</desc>
-    </CG_Your_Interpretation>
-    <Your_Discussion>
-      Discussion
+    </Interpretation>
+    <Discussion>
       <desc>Add here any elaborations on the interpretation and description.</desc>
-    </Your_Discussion>
+    </Discussion>
     <cols>
       <Length b="decimal">
         Length (m)
@@ -1032,14 +1084,26 @@
       </Width>
     </cols>
     <cols>
-      <Top_Depth_m b="decimal">
-        Top Depth (m)
-        <desc>Depth or Height in metres.</desc>
-      </Top_Depth_m>
-      <Bottom_Depth_m b="decimal">
-        Bottom Depth (m)
-        <desc>Depth or Height in metres.</desc>
-      </Bottom_Depth_m>
+      <col>
+        <NW_Top_Depth b="decimal"/>
+        <SW_Top_Depth b="decimal"/>
+        <Center_Top_Depth b="decimal"/>
+      </col>
+      <col>
+        <NE_Top_Depth b="decimal"/>
+        <SE_Top_Depth b="decimal"/>
+      </col>
+    </cols>
+    <cols>
+      <col>
+        <NW_Bottom_Depth b="decimal"/>
+        <SW_Bottom_Depth b="decimal"/>
+        <Center_Bottom_Depth b="decimal"/>
+      </col>
+      <col>
+        <NE_Bottom_Depth b="decimal"/>
+        <SE_Bottom_Depth b="decimal"/>
+      </col>
     </cols>
     <cols>
       <Mid_X b="decimal">
@@ -1049,54 +1113,46 @@
         <desc>An appropriate mid-point on the feature should be recorded on the X/Y coordinates. This will locate the feature on the site grid system.</desc>
       </Mid_Y>
     </cols>
-    <CG_Plans>
-      Plans
+    <Plans>
       <desc>Reference numbers to plans or drawings of this feature.</desc>
-    </CG_Plans>
-    <CG_Section_Numbers>
-      Section Numbers
+    </Plans>
+    <Section_Numbers>
       <desc>Reference numbers to section drawings of this feature</desc>
-    </CG_Section_Numbers>
+    </Section_Numbers>
     <cols>
-      <author f="id readonly">
+      <author f="readonly">
         Record Created By:
-        <str>
-          <pos>4</pos>
-          <fmt>$2-</fmt>
-        </str>
       </author>
-      <timestamp f="id readonly">
+      <timestamp f="readonly">
         Date recorded:
-        <str>
-          <pos>5</pos>
-          <fmt>$2</fmt>
-        </str>
       </timestamp>
     </cols>
-  </Gen>
-  <Context_Group_Contexts f="noscroll">
+  </General>
+  <Stratum_Feature_Loci f="noscroll">
     Relationships
-    <Create_Relationships_to_This_Context_Group t="button" l="Context_Group_Relationship">
+    <Create_Relationships_to_This_Stratum_Feature t="button" l="Stratum_Feature_Relationship">
       Create Relationships to this Stratum/Feature
-    </Create_Relationships_to_This_Context_Group>
+    </Create_Relationships_to_This_Stratum_Feature>
     <cols>
-      <Existing_Relationships_to_This_Context_Group t="list" f="nodata">
+      <Existing_Relationships_to_This_Stratum_Feature t="list" f="nodata">
         Existing Relationships to this Stratum/Feature
-      </Existing_Relationships_to_This_Context_Group>
+      </Existing_Relationships_to_This_Stratum_Feature>
       <col>
         <Selected_Relationship t="webview"/>
-        <Load_Related_Context t="button">
+        <Load_Related_Locus t="button">
           Load Related Locus
-        </Load_Related_Context>
+        </Load_Related_Locus>
         <Delete_Relationship   t="button"/>
       </col>
     </cols>
-  </Context_Group_Contexts>
+  </Stratum_Feature_Loci>
   <Add>
     Attachments
     <Photo t="camera">
       <desc>Use this button to take a photo of the feature using the camera on the tablet. Remember to include a scale in the photo.</desc>
     </Photo>
+    <Attach_File t="file"/>
+    <View_Attached_Files t="viewfiles"/>
     <Guide_2 t="webview">
       Here you can enter filenames or unique reference numbers for image stored on another device.
     </Guide_2>
@@ -1104,22 +1160,39 @@
     <Select_a_Photograph_Log t="dropdown" ec="Photograph_Log"/>
   </Add>
   <Vars f="hidden">
-    <Device_Code>
+    <Device_Code i="User/User_List/Device_Code!">
       <!--@SOURCE: vocabs/device-code.xml-->
     </Device_Code>
-    <Site_Code>
-      <desc>Short code to signify the excavation site and often the year of excavation. Assigned automatically by the module.</desc>
-    </Site_Code>
+    <Stratum_Feature_Site_Name f="id" i="Trench/Trench/Trench_Site_Name">
+      <str><pos>1</pos></str>
+    </Stratum_Feature_Site_Name>
+    <Stratum_Feature_Year_of_Campaign f="id" i="Trench/Vars/Trench_Year_of_Campaign">
+      <str>
+        <pos>2</pos>
+        <fmt> $0</fmt>
+      </str>
+    </Stratum_Feature_Year_of_Campaign>
+    <L_Paren f="id">
+      <str>
+        <pos>5</pos>
+      </str>
+    </L_Paren>
+    <R_Paren f="id">
+      <str>
+        <pos>7</pos>
+      </str>
+    </R_Paren>
+    <Last_Feature_Type t="dropdown" vp="Stratum_Feature/General/Feature_Type"/>
+    <Last_Feature_Prefix/>
   </Vars>
-</Context_Group>
+</Stratum_Feature>
 
-<Matrix>
+<Sediment_Aggregate>
   Sediment/Aggregate
-  <Matrix>
+  <Sediment_Aggregate>
     Sediment/Aggregate
     <cols>
-      <Component f="id">
-        Component Type
+      <Component_Type f="id">
         <desc>Describe the components which make up 10% or more of the deposit.</desc>
         <str>
           <pos>1</pos>
@@ -1147,7 +1220,7 @@
           <opt>Artefacts
           <desc>Human manufactured materials including lithics, beads, ground stone etc.</desc></opt>
         </opts>
-      </Component>
+      </Component_Type>
       <Percentage f="id" b="decimal">
         <str>
           <pos>2</pos>
@@ -1156,8 +1229,7 @@
         <desc>Enter the approximate % volume of this material in the Locus.</desc>
       </Percentage>
     </cols>
-    <Shape>
-      Soil Stone Shape
+    <Soil_Stone_Shape>
       <desc>Shape and roundness of stones and pebbles in the deposit.</desc>
       <opts>
         <opt p="gallery/Other/NA.png">No Observation
@@ -1185,87 +1257,47 @@
         <opt p="gallery/Pebbles/Ground.png">Ground
         <desc>Stones that have been deliberately shaped smooth by grinding.</desc></opt>
       </opts>
-    </Shape>
-  </Matrix>
+    </Soil_Stone_Shape>
+  </Sediment_Aggregate>
   <Vars f="hidden">
-    <Context_ID/>
-    <AreaCode/>
+    <Locus_ID  i="Locus/General/Locus_Locus_ID"/>
+    <Trench_ID i="Locus/General/Locus_Trench_ID"/>
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
   </Vars>
-</Matrix>
-
-<Height>
-  Locus Height
-  <Height>
-    Locus Height
-    <Height_Context_ID f="id readonly">
-      Locus ID
-      <str>
-        <fmt>Loc-$2-</fmt>
-      </str>
-    </Height_Context_ID>
-    <Number f="id notnull">
-      <desc>Add a short description of the point being recorded, for example, 1. North edge of floor, 2. South edge of floor. Mark your points on the sketch for each locus.</desc>
-      <str>
-        <fmt>Height-$2-</fmt>
-      </str>
-    </Number>
-    <X f="id notnull" b="decimal">
-      <desc>Add X coordinate using the site grid</desc>
-      <str>
-        <fmt><![CDATA[$2,]]></fmt>
-      </str>
-    </X>
-    <Y f="id notnull" b="decimal">
-      <desc>Add Y coordinate using the site grid</desc>
-      <str>
-        <fmt><![CDATA[ $2,]]></fmt>
-      </str>
-    </Y>
-    <Z f="id notnull" b="decimal">
-      <desc>Add Z coordinate using the site grid</desc>
-      <str>
-        <fmt><![CDATA[ $2]]></fmt>
-      </str>
-    </Z>
-    <Notes f="notnull">
-      <desc>Add a description here concerning the entity whose position you have recorded</desc>
-    </Notes>
-  </Height>
-  <Vars f="hidden">
-    <AreaCode/>
-  </Vars>
-</Height>
+</Sediment_Aggregate>
 
 <Photograph_Log>
   <desc>A record of images created and stored on another device, eg by a professional site photographer.</desc>
   <Photograph_Log>
     <cols>
-      <Photo_Context_ID f="id readonly">
+      <Photo_Locus_ID f="id readonly" i="Locus/General/Locus_Locus_ID">
         Locus ID
         <desc>Unique number or code for each Locus</desc>
         <str>
-          <pos>1</pos>
-          <fmt>Loc-$2-</fmt>
+          <fmt>{{if $0 then "-$0"}}</fmt>
+          <pos>4</pos>
         </str>
-      </Photo_Context_ID>
-      <Photo_Context_Group_ID f="id readonly">
+      </Photo_Locus_ID>
+      <Photo_Stratum_Feature_ID f="id readonly" i="Stratum_Feature/General/Stratum_Feature_ID">
         Stratum/Feature ID
         <desc>Unique number or code for each Stratum/Feature</desc>
         <str>
-          <pos>2</pos>
-          <fmt>Strat-$2-</fmt>
+          <fmt>{{ if $0 then "-($0)" }}</fmt>
+          <pos>5</pos>
         </str>
-      </Photo_Context_Group_ID>
-      <Photograph_Reference_ID f="id">
+      </Photo_Stratum_Feature_ID>
+      <Photograph_Reference_ID>
         <desc>Unique number or code allocated by creator of the image. It could be a filename or a reference number</desc>
-        <str>
-          <pos>3</pos>
-          <fmt>Photo-$2</fmt>
-        </str>
       </Photograph_Reference_ID>
     </cols>
-    <Scene_Type>
+    <Scene_Type f="id">
       <desc>The type of scene captured, eg opening or closing view of the Locus. (Vocab: Open, Close, Other)</desc>
+      <str>
+        <fmt>-$0</fmt>
+        <pos>6</pos>
+      </str>
       <opts>
         <opt>No Observation
         <desc>data not collected</desc></opt>
@@ -1280,44 +1312,48 @@
         </opt>
       </opts>
     </Scene_Type>
-    <Photograph_Description>
-      Brief Description
-    </Photograph_Description>
+    <Brief_Description/>
   </Photograph_Log>
   <Vars f="hidden">
-    <AreaCode/>
-    <Device_Code>
+    <Photograph_Log_Site_Name f="id" i="Locus/General/Locus_Site_Name Stratum_Feature/Vars/Stratum_Feature_Site_Name">
+      <str>
+        <fmt>Photo-$0</fmt>
+        <pos>1</pos>
+      </str>
+    </Photograph_Log_Site_Name>
+    <Photograph_Log_Year_of_Campaign f="id" i="Locus/Vars/Locus_Year_of_Campaign Stratum_Feature/Vars/Stratum_Feature_Year_of_Campaign">
+      <str>
+        <fmt> $0</fmt>
+        <pos>2</pos>
+      </str>
+    </Photograph_Log_Year_of_Campaign>
+    <Photograph_Trench_ID f="id" i="Locus/General/Locus_Trench_ID Stratum_Feature/General/Stratum_Feature_Trench_ID">
+      <str>
+        <fmt>-$0</fmt>
+        <pos>3</pos>
+      </str>
+    </Photograph_Trench_ID>
+    <Device_Code i="User/User_List/Device_Code!">
       <!--@SOURCE: vocabs/device-code.xml-->
     </Device_Code>
-    <Site_Code>
-      <desc>Short code to signify the excavation site and often the year of excavation</desc>
-    </Site_Code>
   </Vars>
 </Photograph_Log>
 
 <Diary>
   <Diary>
-    <Title f="id">
+    <Title>
       <desc>Give your entry a simple, short title, such as Daily Trench Update, Burial 34, Storm Damage. Note that diary entries allow you to add information in addition to the locus, feature and artefact records elsewhere in the module and should not be the primary description point for those entities</desc>
-      <str>
-        <pos>1</pos>
-        <fmt>Diary-$2</fmt>
-      </str>
     </Title>
     <cols>
-      <timestamp f="id readonly">
+      <Timestamp f="id readonly">
         <desc>The date this entry is created will automatically appear here</desc>
         <str>
-          <pos>2</pos>
-          <fmt>-$2</fmt>
+          <pos>4</pos>
+          <fmt>-$0</fmt>
         </str>
-      </timestamp>
-      <author f="id readonly">
+      </Timestamp>
+      <author>
         <desc>Your name will be added here based on your login</desc>
-        <str>
-          <pos>3</pos>
-          <fmt>-$2</fmt>
-        </str>
       </author>
     </cols>
     <Text>
@@ -1327,21 +1363,40 @@
       <desc>Use this button to take a photo relevant to this entry using the camera on the tablet</desc>
     </Photo>
   </Diary>
+  <Vars f="hidden">
+    <Diary_Site_Name f="id" i="Trench/Trench/Trench_Site_Name">
+      <str>
+        <fmt>Diary-$0</fmt>
+        <pos>1</pos>
+      </str>
+    </Diary_Site_Name>
+    <Diary_Year_of_Campaign f="id" i="Trench/Vars/Trench_Year_of_Campaign">
+      <str>
+        <fmt> $0</fmt>
+        <pos>2</pos>
+      </str>
+    </Diary_Year_of_Campaign>
+    <Diary_Trench_ID f="id" i="Trench/Trench/Trench_Trench_ID">
+      <str>
+        <fmt>-$0</fmt>
+        <pos>3</pos>
+      </str>
+    </Diary_Trench_ID>
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Vars>
 </Diary>
 
-<!--Context-to-Context-->
+<!--Locus-to-Locus-->
 <Relationship f="nodata">
   <Relationships f="noscroll">
     <Parent_Identifier t="webview"/>
     <cols>
-      <AreaCode f="notnull">
-        Trench ID
-      </AreaCode>
-      <Context_ID f="notnull">
-        Locus ID
-      </Context_ID>
+      <Trench_ID f="notnull"/>
+      <Locus_ID  f="notnull"/>
     </cols>
-    <Relationship_Type t="dropdown"/>
+    <Relationship_Type t="dropdown" f="persist!"/>
     <Search            t="button"/>
     <cols>
       <col>
@@ -1349,33 +1404,35 @@
         <Proposed_Relationship t="webview"/>
       </col>
       <col>
-        <Delete_Relationship t="button"/>
+        <Delete_Relationship   t="button"/>
         <Selected_Relationship t="webview"/>
       </col>
     </cols>
     <cols>
-      <Unrelated_Contexts     t="list">
-        Unrelated Loci
-      </Unrelated_Contexts>
+      <Unrelated_Loci         t="list"/>
       <Existing_Relationships t="list"/>
     </cols>
   </Relationships>
+  <Legacies f="noscroll">
+    <Create_New_Legacy         t="button" l="Legacy"/>
+    <List_of_Existing_Legacies t="list"   e="Legacy"/>
+  </Legacies>
+  <Vars f="hidden">
+    <Relationship_Site_Name        i="Locus/General/Locus_Site_Name!"/>
+    <Relationship_Year_of_Campaign i="Locus/Vars/Locus_Year_of_Campaign!"/>
+  </Vars>
 </Relationship>
 
-<!--Context Group to Context-->
-<Context_Group_Relationship f="nodata">
+<!--Locus Group to Locus-->
+<Stratum_Feature_Relationship f="nodata">
   Stratum/Feature Relationship
   <Relationships f="noscroll">
     <Parent_Identifier t="webview"/>
     <cols>
-      <AreaCode f="notnull">
-        Trench ID
-      </AreaCode>
-      <Context_ID f="notnull">
-        Locus ID
-      </Context_ID>
+      <Trench_ID f="notnull"/>
+      <Locus_ID f="notnull"/>
     </cols>
-    <Search            t="button"/>
+    <Search t="button"/>
     <cols>
       <col>
         <Add_Relationship      t="button"/>
@@ -1387,39 +1444,49 @@
       </col>
     </cols>
     <cols>
-      <Unrelated_Contexts     t="list">
-        Unrelated Loci
-      </Unrelated_Contexts>
+      <Unrelated_Loci         t="list"/>
       <Existing_Relationships t="list"/>
     </cols>
   </Relationships>
-</Context_Group_Relationship>
+  <Legacies f="noscroll">
+    <Create_New_Legacy         t="button" l="Legacy"/>
+    <List_of_Existing_Legacies t="list"   e="Legacy"/>
+  </Legacies>
+  <Vars f="hidden">
+    <Stratum_Feature_Relationship_Site_Name        i="Stratum_Feature/Vars/Stratum_Feature_Site_Name!"/>
+    <Stratum_Feature_Relationship_Year_of_Campaign i="Stratum_Feature/Vars/Stratum_Feature_Year_of_Campaign!"/>
+  </Vars>
+</Stratum_Feature_Relationship>
 
 <FCN>
   <General>
     <FCN_ID f="id notnull autonum">
       <str>
-        <pos>2</pos>
-        <fmt>-$2</fmt>
+        <pos>1</pos>
+        <fmt>FCN$0</fmt>
       </str>
     </FCN_ID>
-    <Site_Name f="id notnull">
+    <FCN_Site_Name f="id readonly" i="Locus/General/Locus_Site_Name Trench/Trench/Trench_Site_Name">
+      Site Name
       <str>
-        <pos>1</pos>
-        <fmt>FCN-$2</fmt>
+        <pos>2</pos>
+        <fmt>-$0</fmt>
       </str>
-    </Site_Name>
-    <AreaCode f="notnull">
+    </FCN_Site_Name>
+    <FCN_Trench_ID f="id readonly" i="Locus/General/Locus_Trench_ID Trench/Trench/Trench_Trench_ID">
       Trench ID
-    </AreaCode>
-    <Context_ID f="notnull">
+      <str>
+        <pos>4</pos>
+        <fmt>-$0</fmt>
+      </str>
+    </FCN_Trench_ID>
+    <Locus_ID f="readonly" i="Locus/General/Locus_Locus_ID">
       Locus ID
       <desc>Every archaeological locus (negative element (cut), deposit, structure, skeleton, artefact cluster) is given a unique 3 or 4 letter locus code. Each trench is designated with a separate letter which starts the code, so it is immediately obvious to which trench a locus belongs. For example locus HAA belongs to Trench H, locus MQP to Trench M etc.
       The loci are labelled consecutively in alphabetical order using the letters following the trench letter. For Trench H the first locus would be HAA, the second HAB, the third HAB and so on. In addition sets of letters can denote parts of trenches, buildings etc. E.g. HFs might denote loci from a specific building.
       Burial locus codes begin with the letter Z, followed by the trench letter. Hence burial ZHA is the first burial locus from trench H.
       Check with the trench supervisor who will assign the locus code from the central register.</desc>
-    </Context_ID>
-    <Collection_Area/>
+    </Locus_ID>
     <gps/>
     <Collection_Method>
       <opts>
@@ -1432,11 +1499,10 @@
         <opt>Other</opt>
       </opts>
     </Collection_Method>
-    <Reason_for_Collection/>
     <FCN_Class f="id">
       <str>
-        <pos>3</pos>
-        <fmt>-$1</fmt>
+        <pos>5</pos>
+        <fmt>-$0</fmt>
       </str>
       <opts>
         <opt>Sediment</opt>
@@ -1463,6 +1529,11 @@
     <FCN_Weight_g b="decimal">
       FCN Weight (g)
     </FCN_Weight_g>
+    <Volume_Liters_Group t="group"/>
+    <Volume_Liters t="input" f="noui">
+      Volume (Liters)
+      <!--This will be added to the UI dynamically-->
+    </Volume_Liters>
     <Washed t="radio">
       <!--@SOURCE: vocabs/boolean.xml-->
     </Washed>
@@ -1474,25 +1545,101 @@
     </Analyzed>
     <FCN_Group_Comment/>
     <Attach_File t="file"/>
+    <View_Attached_Files t="viewfiles"/>
     <Attach_Photograph t="camera"/>
   </General>
+  <Vars f="hidden">
+    <FCN_Year_of_Campaign f="id" i="Locus/Vars/Locus_Year_of_Campaign Trench/Vars/Trench_Year_of_Campaign">
+      <str>
+        <pos>3</pos>
+        <fmt> $0</fmt>
+      </str>
+    </FCN_Year_of_Campaign>
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Vars>
 </FCN>
 
+<Soil_Munsel_Color>
+  <Add_Soil_Munsel_Color>
+    <Soil_Munsel_Color f="id">
+      <str>
+        <pos>2</pos>
+        <fmt>-Color-$0</fmt>
+      </str>
+      <!--@SOURCE: vocabs/munsel.xml-->
+    </Soil_Munsel_Color>
+  </Add_Soil_Munsel_Color>
+  <Vars f="hidden">
+    <Soil_Munsel_Color_Locus_ID f="id" i="Locus/General/Locus_Locus_ID">
+      <str>
+        <pos>1</pos>
+        <fmt>$0</fmt>
+      </str>
+    </Soil_Munsel_Color_Locus_ID>
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Vars>
+</Soil_Munsel_Color>
+
+<Legacy>
+  <Legacy>
+    <cols>
+      <Legacy_Site_Name        f="id readonly" i="Trench/Trench/Trench_Site_Name Relationship/Vars/Relationship_Site_Name Stratum_Feature_Relationship/Vars/Stratum_Feature_Relationship_Site_Name">
+        Site Name
+      </Legacy_Site_Name>
+      <Legacy_Year_of_Campaign f="id notnull"  i="Trench/Vars/Trench_Year_of_Campaign Relationship/Vars/Relationship_Year_of_Campaign Stratum_Feature_Relationship/Vars/Stratum_Feature_Relationship_Year_of_Campaign">
+        Year of Campaign
+        <str><fmt> $0</fmt></str>
+      </Legacy_Year_of_Campaign>
+    </cols>
+    <cols>
+      <Legacy_Trench_ID f="id notnull">
+        Trench ID
+        <str>
+          <fmt> $0</fmt>
+        </str>
+        <!--@SOURCE: vocabs/area-code.xml-->
+      </Legacy_Trench_ID>
+      <Legacy_Locus_ID f="id notnull">
+        Locus ID
+        <str>
+          <fmt> L$0</fmt>
+        </str>
+      </Legacy_Locus_ID>
+    </cols>
+  </Legacy>
+  <Var f="hidden">
+    <Device_Code i="User/User_List/Device_Code!">
+      <!--@SOURCE: vocabs/device-code.xml-->
+    </Device_Code>
+  </Var>
+</Legacy>
+
 <logic><![CDATA[
-  <!--@SOURCE: logic/utils.bsh-->
+  <!--@SOURCE: logic/top-matter.bsh-->
+
   <!--@SOURCE: logic/shared.bsh-->
   <!--@SOURCE: logic/relationships-shared.bsh-->
 
-  <!--@SOURCE: logic/vocab-population.bsh-->
   <!--@SOURCE: logic/user-tab-validation.bsh-->
-  <!--@SOURCE: logic/field-inheritance.bsh-->
-  <!--@SOURCE: logic/relationships-context-to-context.bsh-->
-  <!--@SOURCE: logic/relationships-context-group-to-context.bsh-->
-  <!--@SOURCE: logic/local-settings-access.bsh-->
-  <!--@SOURCE: logic/dynamic-ui-context.bsh-->
-  <!--@SOURCE: logic/dynamic-ui-context-group.bsh-->
-  <!--@SOURCE: logic/context-dates.bsh-->
+  <!--@SOURCE: logic/relationships-locus-to-locus.bsh-->
+  <!--@SOURCE: logic/relationships-feature-stratum-to-locus.bsh-->
+  <!--@SOURCE: logic/dynamic-ui-helpers.bsh-->
+  <!--@SOURCE: logic/dynamic-ui-locus.bsh-->
+  <!--@SOURCE: logic/dynamic-ui-feature-stratum.bsh-->
+  <!--@SOURCE: logic/dynamic-ui-fcn.bsh-->
+  <!--@SOURCE: logic/locus-dates.bsh-->
   <!--@SOURCE: logic/soil-texture-helper.bsh-->
-  <!--@SOURCE: logic/search-extension.bsh-->
+  <!--@SOURCE: logic/custom-search.bsh-->
+  <!--@SOURCE: logic/custom-validation.bsh-->
+  <!--@SOURCE: logic/date-closed.bsh-->
+  <!--@SOURCE: logic/create-new-trench-button.bsh-->
+  <!--@SOURCE: logic/create-new-site-button.bsh-->
+  <!--@SOURCE: logic/fcn-entity-list-population.bsh-->
+  <!--@SOURCE: logic/custom-diary-timestamp.bsh-->
+  <!--@SOURCE: logic/field-clearing.bsh-->
 ]]></logic>
 </module>
