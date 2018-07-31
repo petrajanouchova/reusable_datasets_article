@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='utf-8'?>
+<dataSchema>
+  <RelationshipElement name="TransectSUI">
+    <description>Defines relationship between Transect and Survey Unit</description>
+  </RelationshipElement>
+  <RelationshipElement name="Feature - Measurement" type="hierarchical">
+    <description>A 1-to-n relationship between the parent and its children, respectively.</description>
+    <parent>Parent Of</parent>
+    <child>Child Of</child>
+  </RelationshipElement>
+  <ArchaeologicalElement name="Feature">
+    <description></description>
+    <property name="Feature ID" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString>$2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Feature author" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString> $2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Feature Type" type="vocab" isIdentifier="true">
+      <description>Select the appropriate feature type</description>
+      <formatString> $1</formatString>
+      <appendCharacterString> - </appendCharacterString>
+      <lookup>
+        <term>{Artefact_scatter}
+<description> </description></term>
+        <term>{Hearth}
+<description> </description></term>
+        <term>{Hole_drilled_in_the_rock}
+<description> </description></term>
+        <term>{Isolated_find}
+<description> </description></term>
+        <term>{Masonry}
+<description> </description></term>
+        <term>{Stone_cluster_or_circle}
+<description> </description></term>
+        <term>{Other}
+<description> </description></term>
+      </lookup>
+    </property>
+    <property name="Feature timestamp" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Overview Photos" type="file" file="true" thumbnail="true">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Latitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Longitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Northing" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Easting" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Accuracy" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Description" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Photo of Sketch" type="file" file="true" thumbnail="true">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Comments" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Interpretation" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Material" type="vocab">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+      <lookup>
+        <term>{Ceramic}
+<description> </description></term>
+        <term>{Glass}
+<description> </description></term>
+        <term>{Metal}
+<description> </description></term>
+        <term>{Stone}
+<description> </description></term>
+        <term>{Organic}
+<description> </description></term>
+        <term>{Other}
+<description> </description></term>
+      </lookup>
+    </property>
+    <property name="Asociated Material Notes" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Detail Photos" type="file" file="true" thumbnail="true">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="IDs of Pictures from External Camera" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="External Photo Notes" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+  </ArchaeologicalElement>
+  <ArchaeologicalElement name="Measurement">
+    <description></description>
+    <property name="Dimension" type="vocab" isIdentifier="true">
+      <description></description>
+      <formatString>$1</formatString>
+      <appendCharacterString> - </appendCharacterString>
+      <lookup>
+        <term>{Height__m_}
+<description> </description></term>
+        <term>{Length__m_}
+<description> </description></term>
+        <term>{Width__m_}
+<description> </description></term>
+        <term>{Depth__m_}
+<description> </description></term>
+        <term>{Diameter__m_}
+<description> </description></term>
+        <term>{Area__m__}
+<description> </description></term>
+        <term>{Other}
+<description> </description></term>
+      </lookup>
+    </property>
+    <property name="Measurement" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString>: $2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+  </ArchaeologicalElement>
+  <ArchaeologicalElement name="Photolog">
+    <description></description>
+    <property name="Photographed Feature ID" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString>$2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="IDs of Picture from External Camera" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="External Photo Notes" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Photolog timestamp" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+  </ArchaeologicalElement>
+  <ArchaeologicalElement name="Tracklog">
+    <description></description>
+    <property name="TracklogTeam" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString>$2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Timestamp" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString> $2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Latitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Longitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Heading" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Accuracy" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+  </ArchaeologicalElement>
+  <ArchaeologicalElement name="Transect Point">
+    <description></description>
+    <property name="TracklogTeam" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString>$2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Timestamp" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString> $2</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="State" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Latitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Longitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Heading" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Accuracy" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+  </ArchaeologicalElement>
+</dataSchema>

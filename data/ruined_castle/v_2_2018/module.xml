@@ -1,0 +1,188 @@
+<!--@POSTPROC: ./postproc.sh-->
+<module>
+
+<Login f="nodata">
+  <User_List f="noscroll">
+    <Users f="nolabel user" l="Control"/>
+  </User_List>
+</Login>
+
+<Control f="nodata">
+  <Control f="noscroll">
+    <New_Feature l="Feature"/>
+    <New_Photolog l="Photolog"/>
+    <List_of_Existing_Features e="Feature"/>
+  </Control>
+  <Tracklog>
+    Defaults
+    <autonum/>
+    <internalExternalGPS t="radio">
+      Choose which GPS to connect to:
+      <opts>
+        <opt>Internal</opt>
+        <opt>External</opt>
+      </opts>
+    </internalExternalGPS>
+    <cols>
+      <col>
+        <refreshText b="decimal">
+          GPS Refresh Rate (s)
+        </refreshText>
+      </col>
+      <col>
+        <startGPSButton t="button">Enable GPS</startGPSButton>
+        <stopGPSButton  t="button">Disable GPS</stopGPSButton>
+      </col>
+    </cols>
+    <cols>
+      <trackdistText b="decimal">Tracklog Distance Interval (m)</trackdistText>
+      <trackdistButton t="button">Enable Tracklog and Set Distance Interval</trackdistButton>
+    </cols>
+    <cols>
+      <tracktimeText b="decimal">Tracklog Time interval (s)</tracktimeText>
+      <tracktimeButton t="button">Enable Tracklog and Set Time Interval</tracktimeButton>
+    </cols>
+    <trackOffButton t="button">Tracklog Off</trackOffButton>
+    <Diagnostics f="readonly"/>
+    <SyncOn t="button">Sync On</SyncOn>
+    <SyncOff t="button">Sync Off</SyncOff>
+  </Tracklog>
+  <Map f="noscroll">
+    <Map t="map" f="nolabel"/>
+    <Load_Highlighted_Record t="button"/>
+  </Map>
+  <search/>
+</Control>
+
+<Feature>
+  <fmt>{{Feature_ID}} {{Feature_Type}}</fmt>
+  <Feature>
+    <CHECK_FOR_MISSING_DATA t="button" c="orange"/>
+    <Feature_ID f="autonum noannotation nocertainty notnull">
+      <!--Styled using @POSTPROC-->
+    </Feature_ID>
+    <cols>
+      <author/>
+      <timestamp/>
+    </cols>
+    <Overview_Photos t="camera" f="notnull"/>
+    <gps f="notnull"/>
+    <Feature_Type f="notnull">
+      <desc>Select the appropriate feature type</desc>
+      <opts>
+        <opt>
+          Artefact scatter
+          <opt/>
+        </opt>
+        <opt>
+          Boulder
+          <opt/>
+        </opt>
+        <opt>
+          Hearth
+          <opt/>
+        </opt>
+        <opt>
+          Hole drilled in the rock
+          <opt/>
+        </opt>
+        <opt>
+          Isolated find
+          <opt/>
+        </opt>
+        <opt>
+          Masonry
+          <opt>Rectangular</opt>
+          <opt>Round</opt>
+        </opt>
+        <opt>
+          Metal Feature
+          <opt/>
+        </opt>
+        <opt>
+          Platform
+          <opt>Rectangular</opt>
+          <opt>Round</opt>
+        </opt>
+        <opt>Other</opt>
+      </opts>
+    </Feature_Type>
+    <Description/>
+    <Photo_of_Sketch t="camera"/>
+    <Comments/>
+    <Interpretation/>
+  </Feature>
+  <Measurement f="noscroll">
+    <Add_Measurement lc="Measurement"/>
+    <List_of_Measurements ec="Measurement"/>
+  </Measurement>
+  <Detail>
+    <Material t="checkbox">
+      <opts>
+        <opt>Ceramic</opt>
+        <opt>Glass</opt>
+        <opt>Metal</opt>
+        <opt>Stone</opt>
+        <opt>Organic</opt>
+        <opt>Other</opt>
+      </opts>
+    </Material>
+    <Asociated_Material_Notes/>
+    <Detail_Photos t="camera"/>
+  </Detail>
+  <External_Photos>
+    <IDs_of_Pictures_from_External_Camera/>
+    <External_Photo_Notes/>
+  </External_Photos>
+</Feature>
+
+<Measurement>
+  <fmt>{{Dimension}}: {{Measurement}}</fmt>
+  <Measurement>
+    <Dimension t="dropdown">
+      <opts>
+        <opt>Height (m)</opt>
+        <opt>Length (m)</opt>
+        <opt>Width (m)</opt>
+        <opt>Depth (m)</opt>
+        <opt>Diameter (m)</opt>
+        <opt>Area (m&#178;)</opt>
+        <opt>Other</opt>
+      </opts>
+    </Dimension>
+    <Measurement b="decimal"/>
+  </Measurement>
+</Measurement>
+
+<Photolog>
+  <fmt>{{Photographed_Feature_ID}}</fmt>
+  <Photolog>
+    <Photographed_Feature_ID f="notnull"/>
+    <IDs_of_Picture_from_External_Camera/>
+    <External_Photo_Notes f="notnull"/>
+    <timestamp>Created at</timestamp>
+  </Photolog>
+</Photolog>
+
+<Tracklog f="noui">
+  <fmt>{{TracklogTeam}} {{Timestamp}}</fmt>
+  <Tracklog>
+    <Timestamp/>
+    <TracklogTeam/>
+    <Latitude/>
+    <Longitude/>
+    <Heading/>
+    <Accuracy/>
+  </Tracklog>
+</Tracklog>
+
+<logic><![CDATA[
+<!--@SOURCE: logic/shared.bsh-->
+<!--@SOURCE: logic/custom-search.bsh-->
+<!--@SOURCE: logic/validation-button.bsh-->
+<!--@SOURCE: logic/tracklog.bsh-->
+<!--@SOURCE: logic/sync-disable.bsh-->
+<!--@SOURCE: logic/map.bsh-->
+]]></logic>
+
+</module>
