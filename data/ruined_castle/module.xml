@@ -1,12 +1,6 @@
 <!--@POSTPROC: ./postproc.sh-->
 <module>
 
-<rels>
-  <RelationshipElement name="TransectSUI">
-    <description>Defines relationship between Transect and Survey Unit</description>
-  </RelationshipElement>
-</rels>
-
 <Login f="nodata">
   <User_List f="noscroll">
     <Users f="nolabel user" l="Control"/>
@@ -49,18 +43,19 @@
       <tracktimeButton t="button">Enable Tracklog and Set Time Interval</tracktimeButton>
     </cols>
     <trackOffButton t="button">Tracklog Off</trackOffButton>
-    <trackStatus f="readonly" b="string">Tracklog Status</trackStatus>
+    <Diagnostics f="readonly"/>
     <SyncOn t="button">Sync On</SyncOn>
     <SyncOff t="button">Sync Off</SyncOff>
   </Tracklog>
   <Map f="noscroll">
     <Map t="map" f="nolabel"/>
+    <Load_Highlighted_Record t="button"/>
   </Map>
   <search/>
 </Control>
 
 <Feature>
-  <fmt>{{Feature_ID}} {{author}} {{Feature_Type}}</fmt>
+  <fmt>{{Feature_ID}} {{Feature_Type}}</fmt>
   <Feature>
     <CHECK_FOR_MISSING_DATA t="button" c="orange"/>
     <Feature_ID f="autonum noannotation nocertainty notnull">
@@ -75,12 +70,40 @@
     <Feature_Type f="notnull">
       <desc>Select the appropriate feature type</desc>
       <opts>
-        <opt>Artefact scatter</opt>
-        <opt>Hearth</opt>
-        <opt>Hole drilled in the rock</opt>
-        <opt>Isolated find</opt>
-        <opt>Masonry</opt>
-        <opt>Stone cluster or circle</opt>
+        <opt>
+          Artefact scatter
+          <opt/>
+        </opt>
+        <opt>
+          Boulder
+          <opt/>
+        </opt>
+        <opt>
+          Hearth
+          <opt/>
+        </opt>
+        <opt>
+          Hole drilled in the rock
+          <opt/>
+        </opt>
+        <opt>
+          Isolated find
+          <opt/>
+        </opt>
+        <opt>
+          Masonry
+          <opt>Rectangular</opt>
+          <opt>Round</opt>
+        </opt>
+        <opt>
+          Metal Feature
+          <opt/>
+        </opt>
+        <opt>
+          Platform
+          <opt>Rectangular</opt>
+          <opt>Round</opt>
+        </opt>
         <opt>Other</opt>
       </opts>
     </Feature_Type>
@@ -152,19 +175,6 @@
     <Accuracy/>
   </Tracklog>
 </Tracklog>
-
-<Transect_Point f="noui">
-  <fmt>{{TracklogTeam}} {{Timestamp}}</fmt>
-  <Transect_Point>
-    <Timestamp/>
-    <TracklogTeam/>
-    <State/>
-    <Latitude/>
-    <Longitude/>
-    <Heading/>
-    <Accuracy/>
-  </Transect_Point>
-</Transect_Point>
 
 <logic><![CDATA[
 <!--@SOURCE: logic/shared.bsh-->
