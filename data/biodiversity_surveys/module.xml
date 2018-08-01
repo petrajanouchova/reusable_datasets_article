@@ -1,0 +1,214 @@
+<module>
+<!--@POSTPROC: ./postproc.sh-->
+<rels>
+  <RelationshipElement name="TransectSUI">
+    <description>Defines relationship between Transect and Survey Unit</description>
+  </RelationshipElement>
+</rels>
+
+<Login f="nodata">
+  <Login f="noscroll">
+    <Login t="list" f="nolabel user" l="Start"/>
+  </Login>
+</Login>
+
+<Start f="nodata">
+  <Main>
+    <Guide t="webview" f="nolabel"/>
+    <Start_Tracklog t="button" c="tracklog-start"/>
+    <BR_1 t="webview" f="nolabel"><markdown>\ </markdown></BR_1>
+    <Setting_up_Trap     l="Setup_Trap"/>
+    <Checking_Trap       l="Check_Trap"/>
+    <Animal_outside_Trap l="Animal_outside"/>
+    <DNA_Sample          l="DNA_Sample"/>
+    <Plant_Survey        l="Plant_Survey"/>
+    <Cultural_Knowledge  l="Cultural_Knowledge"/>
+    <Notes               l="Notes"/>
+    <BR_2 t="webview" f="nolabel"><markdown>\ </markdown></BR_2>
+    <Stop_Tracklog  t="button" c="tracklog-stop"/>
+  </Main>
+  <Map f="noscroll">
+    <Map t="map" f="nolabel"/>
+    <Load_Highlighted_Record t="button"/>
+  </Map>
+  <search/>
+  <Tracklog>
+    Tracklog (Advanced)
+    <internalExternalGPS t="radio">
+      Choose which GPS to connect to:
+      <opts>
+        <opt>Internal</opt>
+        <opt>External</opt>
+      </opts>
+    </internalExternalGPS>
+    <cols>
+      <col>
+        <refreshText b="decimal">
+          GPS Refresh Rate (s)
+        </refreshText>
+      </col>
+      <col>
+        <startGPSButton t="button">Enable GPS</startGPSButton>
+        <stopGPSButton  t="button">Disable GPS</stopGPSButton>
+      </col>
+    </cols>
+    <cols>
+      <trackdistText b="decimal">Tracklog Distance Interval (m)</trackdistText>
+      <trackdistButton t="button">Set Tracklog Distance Interval</trackdistButton>
+    </cols>
+    <cols>
+      <tracktimeText b="decimal">Tracklog Time interval (s)</tracktimeText>
+      <tracktimeButton t="button">Set Tracklog Time Interval</tracktimeButton>
+    </cols>
+    <trackOffButton t="button">Tracklog Off</trackOffButton>
+    <trackStatus f="readonly" b="string">Tracklog Status</trackStatus>
+    <SyncOn t="button">Sync On</SyncOn>
+    <SyncOff t="button">Sync Off</SyncOff>
+  </Tracklog>
+</Start>
+
+<Setup_Trap>
+  <fmt>{{Place_name}} {{What_type_of_trap}} {{Date}} {{Time}}</fmt>
+  <Setting_up>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is putting out traps?</author>
+    <Place_name f="noannotation nocertainty"/>
+    <What_type_of_trap f="noannotation nocertainty">
+      What type of trap?
+      <!--@SOURCE: vocab/trap-type.xml-->
+    </What_type_of_trap>
+    <gps/>
+  </Setting_up>
+</Setup_Trap>
+
+<Check_Trap>
+  <fmt>{{What_trap_are_you_checking}} {{What_did_you_find_in_trap}} {{Date}} {{Time}}</fmt>
+  <Checking>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is checking?</author>
+    <What_trap_are_you_checking f="noannotation nocertainty">
+      What trap are you checking?
+      <!--@SOURCE: vocab/trap-type.xml-->
+    </What_trap_are_you_checking>
+    <What_did_you_find_in_trap f="noannotation nocertainty">
+      What did you find in trap?
+      <!--@SOURCE: vocab/animal-type.xml-->
+    </What_did_you_find_in_trap>
+    <Notes f="noannotation nocertainty"/>
+    <Take_Photo t="camera" f="noannotation nocertainty"/>
+    <Talk_about_animal t="audio" f="noannotation nocertainty"/>
+    <Tissue_number b="decimal" f="noannotation nocertainty"/>
+    <Snout_to_vent_length_mm b="decimal" f="noannotation nocertainty">
+      Snout to vent length (mm)
+    </Snout_to_vent_length_mm>
+    <Count b="decimal" f="noannotation nocertainty"/>
+    <gps/>
+  </Checking>
+</Check_Trap>
+
+<Animal_outside>
+  <fmt>{{Animal_outside_trap}} {{Date}} {{Time}}</fmt>
+  <Animal>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is recording?</author>
+    <Animal_outside_trap f="noannotation nocertainty">
+      <!--@SOURCE: vocab/animal-type.xml-->
+    </Animal_outside_trap>
+    <Notes f="noannotation nocertainty"/>
+    <Take_Photo t="camera" f="noannotation nocertainty"/>
+    <Talk_about_animal t="audio" f="noannotation nocertainty"/>
+    <gps/>
+  </Animal>
+</Animal_outside>
+
+<DNA_Sample>
+  <fmt>{{Tissue_number}} {{Type_Species_And_Notes}} {{Date}} {{Time}}</fmt>
+  <DNA_Sample>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is recording?</author>
+    <Tissue_number b="decimal" f="noannotation nocertainty"/>
+    <Type_Species_And_Notes f="noannotation nocertainty">
+      Type Species &amp; Notes
+    </Type_Species_And_Notes>
+    <Snout_to_vent_length_mm b="decimal" f="noannotation nocertainty">
+      Snout to vent length (mm)
+    </Snout_to_vent_length_mm>
+    <Take_Photo t="camera" f="noannotation nocertainty"/>
+    <gps/>
+  </DNA_Sample>
+</DNA_Sample>
+
+<Plant_Survey>
+  <fmt>{{Type_plant_name}} {{Date}} {{Time}}</fmt>
+  <Plant>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is recording?</author>
+    <Type_plant_name f="noannotation nocertainty"/>
+    <Take_Photo t="camera" f="noannotation nocertainty"/>
+    <gps/>
+  </Plant>
+</Plant_Survey>
+
+<Cultural_Knowledge>
+  <fmt>{{Who_is_talking}} {{Date}} {{Time}}</fmt>
+  <Cultural_Knowledge>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is recording?</author>
+    <Who_is_talking f="noannotation nocertainty">Who is talking?</Who_is_talking>
+    <What_is_being_talked_about f="noannotation nocertainty">What is being talked about?</What_is_being_talked_about>
+    <Record_knowledge_now t="audio" f="noannotation nocertainty"/>
+    <Write_down_notes_here f="noannotation nocertainty"/>
+    <gps/>
+  </Cultural_Knowledge>
+</Cultural_Knowledge>
+
+<Notes>
+  <fmt>{{author}} {{Date}} {{Time}}</fmt>
+  <Notes>
+    <!--@SOURCE: xml/date-time.xml-->
+    <author f="noannotation nocertainty">Who is recording?</author>
+    <Notes f="noannotation nocertainty"/>
+    <Take_Photo t="camera" f="noannotation nocertainty"/>
+    <gps/>
+  </Notes>
+</Notes>
+
+
+<Tracklog f="noui">
+  <fmt>{{TracklogTeam}} {{Timestamp}}</fmt>
+  <Tracklog>
+    <Timestamp/>
+    <TracklogTeam/>
+    <Latitude/>
+    <Longitude/>
+    <Heading/>
+    <Accuracy/>
+  </Tracklog>
+</Tracklog>
+
+<Transect_Point f="noui">
+  <fmt>{{TracklogTeam}} {{Timestamp}}</fmt>
+  <Transect_Point>
+    <Timestamp/>
+    <TracklogTeam/>
+    <State/>
+    <Latitude/>
+    <Longitude/>
+    <Heading/>
+    <Accuracy/>
+  </Transect_Point>
+</Transect_Point>
+
+<logic><![CDATA[
+<!--@SOURCE: logic/shared.bsh-->
+<!--@SOURCE: logic/sync-disable.bsh-->
+<!--@SOURCE: logic/tracklog-guide.bsh-->
+<!--@SOURCE: logic/tracklog.bsh-->
+<!--@SOURCE: logic/date-time-population.bsh-->
+<!--@SOURCE: logic/map.bsh-->
+<!--@SOURCE: logic/custom-search.bsh-->
+<!--@SOURCE: logic/enable-gps.bsh-->
+<!--@SOURCE: logic/custom-gps.bsh-->
+]]></logic>
+
+</module>
