@@ -191,6 +191,6 @@
 <!--@SOURCE: logic/enable-gps.bsh-->
 <!--@SOURCE: logic/custom-gps.bsh-->
 <!--@SOURCE: logic/submit.bsh-->
-]]></logic>
+]]></logic> 
 
 </module>
